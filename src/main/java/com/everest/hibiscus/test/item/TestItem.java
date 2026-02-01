@@ -2,8 +2,9 @@ package com.everest.hibiscus.test.item;
 
 import com.everest.hibiscus.Hibiscus;
 import com.everest.hibiscus.api.modules.gui.item.VariableTexture;
+import com.everest.hibiscus.api.modules.rendering.text.HibiscusPresetEffects;
 import com.everest.hibiscus.api.modules.rendering.text.TextEffects;
-import com.everest.hibiscus.api.modules.rendering.text.effects.WaveEffect;
+import com.everest.hibiscus.api.modules.rendering.text.registry.TextEffectManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -16,7 +17,11 @@ public class TestItem extends Item implements VariableTexture {
 
     @Override
     public Text getName(ItemStack stack) {
-        return TextEffects.withEffect(Text.literal("Test Item"), new WaveEffect());
+        return TextEffects.withEffect(
+                Text.literal("Test Item"),
+                HibiscusPresetEffects.WAVE_EFFECT,
+                TextEffectManager.getEffect(HibiscusPresetEffects.WAVE_EFFECT)
+        );
     }
 
     @Override

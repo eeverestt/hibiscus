@@ -5,13 +5,11 @@
   "package": "com.everest.hibiscus.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "api.text.TextMixin"
   ],
   "client": [
     "ChestEntityRendererMixin",
     "api.gui.ItemRendererMixin",
-    "api.text.DrawContextMixin",
-    "api.text.ScreenMixin"
+    "api.text.TextRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

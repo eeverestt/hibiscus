@@ -5,9 +5,15 @@ import com.everest.hibiscus.api.modules.compat.annotation.RequiresMod;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.io.File;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.net.URL;
-import java.util.*;
-import java.lang.reflect.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public final class ConditionalProcessor {
 

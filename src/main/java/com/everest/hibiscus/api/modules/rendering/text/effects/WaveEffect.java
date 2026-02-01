@@ -2,9 +2,8 @@ package com.everest.hibiscus.api.modules.rendering.text.effects;
 
 import com.everest.hibiscus.api.modules.rendering.text.registry.TextEffect;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.text.Style;
+import net.minecraft.text.OrderedText;
 import org.joml.Matrix4f;
 
 public class WaveEffect implements TextEffect {
@@ -23,44 +22,32 @@ public class WaveEffect implements TextEffect {
     }
 
     @Override
-    public void render(DrawContext context, TextRenderer textRenderer, String text, int x, int y, int color, Style style, float tickDelta) {
+    public int render(TextRenderer textRenderer, OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light) {
         float time = (System.nanoTime() / 1_000_000L) / 50f;
-        int advance = 0;
+        final float[] cursor = {0f};
 
-        for (int i = 0; i < text.length(); i++) {
-            char ch = text.charAt(i);
-
-            context.getMatrices().push();
-
-            float wobble = (float) Math.sin(time * speed + i * spacing) * amplitude;
-
-            context.getMatrices().translate(
-                    x + advance,
-                    y + wobble,
-                    0f
-            );
+        text.accept((index, style, codePoint) -> {
+            float wobble = (float) Math.sin(time * speed + index * spacing) * amplitude;
+            String charStr = String.valueOf(Character.toChars(codePoint));
+            int charColor = style.getColor() != null ? style.getColor().getRgb() : color;
 
             textRenderer.draw(
-                    String.valueOf(ch),
-                    0,
-                    0,
-                    color,
-                    false,
-                    context.getMatrices().peek().getPositionMatrix(),
-                    context.getVertexConsumers(),
-                    TextRenderer.TextLayerType.NORMAL,
-                    0,
-                    15728880
+                    charStr,
+                    x + cursor[0],
+                    y + wobble,
+                    charColor,
+                    shadow,
+                    matrix,
+                    vertexConsumers,
+                    layerType,
+                    backgroundColor,
+                    light
             );
 
-            context.getMatrices().pop();
+            cursor[0] += textRenderer.getWidth(charStr);
+            return true;
+        });
 
-            advance += textRenderer.getWidth(String.valueOf(ch));
-        }
-    }
-
-    @Override
-    public void render(TextRenderer textRenderer, String text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light, Style style, float tickDelta) {
-
+        return (int) cursor[0];
     }
 }

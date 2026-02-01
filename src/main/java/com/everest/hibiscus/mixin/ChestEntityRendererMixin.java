@@ -1,7 +1,7 @@
 package com.everest.hibiscus.mixin;
 
-import com.everest.hibiscus.api.modules.rendering.world.SkyBeamRenderer;
 import com.everest.hibiscus.api.modules.rendering.util.WorldRenderOptions;
+import com.everest.hibiscus.api.modules.rendering.world.SkyBeamRenderer;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
