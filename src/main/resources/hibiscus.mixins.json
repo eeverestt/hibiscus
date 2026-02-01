@@ -9,6 +9,7 @@
   "client": [
     "ChestEntityRendererMixin",
     "api.gui.ItemRendererMixin",
+    "api.text.InGameHudMixin",
     "api.text.TextRendererMixin"
   ],
   "injectors": {

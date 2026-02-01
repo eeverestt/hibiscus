@@ -1,5 +1,6 @@
 package com.everest.hibiscus.api.modules.rendering.text.effects;
 
+import com.everest.hibiscus.Hibiscus;
 import com.everest.hibiscus.api.modules.rendering.text.registry.TextEffect;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -23,26 +24,19 @@ public class WaveEffect implements TextEffect {
 
     @Override
     public int render(TextRenderer textRenderer, OrderedText text, float x, float y, int color, boolean shadow, Matrix4f matrix, VertexConsumerProvider vertexConsumers, TextRenderer.TextLayerType layerType, int backgroundColor, int light) {
-        float time = (System.nanoTime() / 1_000_000L) / 50f;
+        float time = ((float) System.nanoTime() / 1_000_000L) / 50f;
         final float[] cursor = {0f};
 
         text.accept((index, style, codePoint) -> {
             float wobble = (float) Math.sin(time * speed + index * spacing) * amplitude;
             String charStr = String.valueOf(Character.toChars(codePoint));
-            int charColor = style.getColor() != null ? style.getColor().getRgb() : color;
 
-            textRenderer.draw(
-                    charStr,
-                    x + cursor[0],
-                    y + wobble,
-                    charColor,
-                    shadow,
-                    matrix,
-                    vertexConsumers,
-                    layerType,
-                    backgroundColor,
-                    light
-            );
+            int styleColor = style.getColor() != null ? style.getColor().getRgb() : -1;
+            int finalColor = getColorForCharacter(index, color, styleColor);
+
+            style.withFont(Hibiscus.id("distorted"));
+
+            textRenderer.draw(charStr, x + cursor[0], y + wobble, finalColor, shadow, matrix, vertexConsumers, layerType, backgroundColor, light);
 
             cursor[0] += textRenderer.getWidth(charStr);
             return true;
