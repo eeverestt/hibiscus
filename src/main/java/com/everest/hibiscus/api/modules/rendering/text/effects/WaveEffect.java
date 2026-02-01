@@ -34,8 +34,6 @@ public class WaveEffect implements TextEffect {
             int styleColor = style.getColor() != null ? style.getColor().getRgb() : -1;
             int finalColor = getColorForCharacter(index, color, styleColor);
 
-            style.withFont(Hibiscus.id("distorted"));
-
             textRenderer.draw(charStr, x + cursor[0], y + wobble, finalColor, shadow, matrix, vertexConsumers, layerType, backgroundColor, light);
 
             cursor[0] += textRenderer.getWidth(charStr);
